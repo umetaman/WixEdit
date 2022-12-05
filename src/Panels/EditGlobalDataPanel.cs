@@ -22,6 +22,7 @@
 using System;
 using System.Drawing;
 using System.Collections;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Windows.Forms;
 using System.Xml;
@@ -45,32 +46,28 @@ namespace WixEdit.Panels
             reloadAllPanels = reloadAll;
 
             LoadData();
+
+            skipElements = new List<string>();
+            skipElements.Add("Property");
+            skipElements.Add("UI");
+            skipElements.Add("Icon");
+            skipElements.Add("Binary");
+            skipElements.Add("Feature");
+            skipElements.Add("Directory");
+            skipElements.Add("DirectoryRef");
+            skipElements.Add("InstallExecuteSequence");
+            skipElements.Add("InstallUISequence");
+            skipElements.Add("AdminExecuteSequence");
+            skipElements.Add("AdminUISequence");
+            skipElements.Add("AdvertiseExecuteSequence");
+            skipElements.Add("CustomAction");
+            skipElements.Add("CustomTable");
         }
 
-        private StringCollection skipElements;
-        protected override StringCollection SkipElements
+        protected override List<string> SkipElements
         {
             get
             {
-                if (skipElements == null)
-                {
-                    skipElements = new StringCollection();
-                    skipElements.Add("Property");
-                    skipElements.Add("UI");
-                    skipElements.Add("Icon");
-                    skipElements.Add("Binary");
-                    skipElements.Add("Feature");
-                    skipElements.Add("Directory");
-                    skipElements.Add("DirectoryRef");
-                    skipElements.Add("InstallExecuteSequence");
-                    skipElements.Add("InstallUISequence");
-                    skipElements.Add("AdminExecuteSequence");
-                    skipElements.Add("AdminUISequence");
-                    skipElements.Add("AdvertiseExecuteSequence");
-                    skipElements.Add("CustomAction");
-                    skipElements.Add("CustomTable");
-                }
-
                 return skipElements;
             }
         }

@@ -552,10 +552,10 @@ WixFiles.WixNamespaceUri));
 
         public ArrayList GetXsdSubElements(string elementName)
         {
-            return GetXsdSubElements(elementName, new StringCollection());
+            return GetXsdSubElements(elementName, new List<string>());
         }
 
-        public ArrayList GetXsdSubElements(string elementName, StringCollection skipElements)
+        public ArrayList GetXsdSubElements(string elementName, List<string> skipElements)
         {
             ArrayList ret = new ArrayList();
             ArrayList retExt = new ArrayList();
