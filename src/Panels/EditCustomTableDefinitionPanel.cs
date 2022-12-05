@@ -44,21 +44,8 @@ namespace WixEdit.Panels
             LoadData();
 
             CurrentGrid.PropertyValueChanged += new PropertyValueChangedEventHandler(CurrentGrid_PropertyValueChanged);
-        }
-
-        private StringCollection skipElements;
-        protected override StringCollection SkipElements
-        {
-            get
-            {
-                if (skipElements == null)
-                {
-                    skipElements = new StringCollection();
-                    skipElements.Add("Row");
-                }
-
-                return skipElements;
-            }
+            skipElements = new System.Collections.Generic.List<string>();
+            skipElements.Add("Row");
         }
 
         protected override void PopupPanelContextMenu(System.Object sender, System.EventArgs e)

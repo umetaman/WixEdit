@@ -21,6 +21,7 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Drawing;
 using System.Windows.Forms;
@@ -54,6 +55,8 @@ namespace WixEdit.Panels
             CreateControl();
 
             _fullExpandTreeAtStart = fullExpandTreeAtStart;
+
+            skipElements = new List<string>();
         }
 
         public DisplayTreeBasePanel(WixFiles wixFiles, string xpath, string keyName, bool fullExpandTreeAtStart)
@@ -63,6 +66,8 @@ namespace WixEdit.Panels
             CreateControl();
 
             _fullExpandTreeAtStart = fullExpandTreeAtStart;
+
+            skipElements = new List<string>();
         }
 
         public DisplayTreeBasePanel(WixFiles wixFiles, string xpath, string elementName, string keyName)
@@ -70,6 +75,8 @@ namespace WixEdit.Panels
         {
             InitializeComponent();
             CreateControl();
+
+            skipElements = new List<string>();
         }
 
         public DisplayTreeBasePanel(WixFiles wixFiles, string xpath, string keyName)
@@ -77,6 +84,8 @@ namespace WixEdit.Panels
         {
             InitializeComponent();
             CreateControl();
+
+            skipElements = new List<string>();
         }
 
         protected TreeView CurrentTreeView
@@ -464,11 +473,12 @@ namespace WixEdit.Panels
             InitTreeView();
         }
 
-        protected virtual StringCollection SkipElements
+        protected List<string> skipElements = new List<string>();
+        protected virtual List<string> SkipElements
         {
             get
             {
-                return new StringCollection();
+                return skipElements;
             }
         }
 
@@ -527,8 +537,12 @@ namespace WixEdit.Panels
 
         protected void AddTreeNodesRecursive(XmlNode file, TreeNodeCollection nodes)
         {
-            if (file.Name.StartsWith("#") ||
-                SkipElements.Contains(file.Name))
+            if (file.Name.StartsWith("#"))
+            {
+                return;
+            }
+
+            if (SkipElements.Contains(file.Name))
             {
                 return;
             }
@@ -544,21 +558,8 @@ namespace WixEdit.Panels
                 {
                     string key = Path.GetExtension(filePath).ToUpper();
                     imageIndex = currTreeView.ImageList.Images.IndexOfKey(key);
-                    if (imageIndex < 0)
-                    {
-                        try
-                        {
-                            Icon ico = FileIconFactory.GetFileIcon(filePath);
-                            if (ico != null)
-                            {
-                                currTreeView.ImageList.Images.Add(key, ico);
-                                imageIndex = currTreeView.ImageList.Images.Count - 1;
-                            }
-                        } // if icon retrieved from icon factory
-                        catch { }
-                    } // if image not already in tree image list
-                } // if file exists
-            } // node is a file and Source attribute is not null
+                }
+            } 
             if (imageIndex < 0)
             {
                 imageIndex = ImageListFactory.GetImageIndex(file.Name);
